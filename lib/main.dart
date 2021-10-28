@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fooderlich/models/tab_manager.dart';
+import 'package:provider/provider.dart';
+
 import 'fooderlich_theme.dart';
+import 'models/models.dart';
 import 'home.dart';
 
 void main() {
@@ -17,7 +21,17 @@ class Fooderlich extends StatelessWidget {
     return MaterialApp(
       theme: theme,
       title: 'Fooderlich',
-      home: const Home(),
+      //assign MultiProvider as property of Home. It accepts a list of providers
+      // for Home's descendant widget to access
+      home: MultiProvider(
+        providers: [
+          //creates an instance of TabManager, which listen to tab index changes
+          //and notifies its listeners
+          ChangeNotifierProvider(create: (context) => TabManager()),
+          ChangeNotifierProvider(create: (context) => GroceryManager()),
+        ],
+        child: const Home(),
+      )
     );
   }
 }
